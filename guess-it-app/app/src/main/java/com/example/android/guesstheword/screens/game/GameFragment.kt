@@ -17,7 +17,6 @@
 package com.example.android.guesstheword.screens.game
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -35,7 +34,7 @@ class GameFragment : Fragment() {
 
     private lateinit var viewModel: GameViewModel
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 
         // Inflate view and obtain an instance of the binding class
         binding = DataBindingUtil.inflate(inflater, R.layout.game_fragment, container, false)
@@ -57,6 +56,12 @@ class GameFragment : Fragment() {
             binding.wordText.text = newWord
         })
 
+        viewModel.eventGameFinish.observe(viewLifecycleOwner, Observer { hasFinished ->
+            if (hasFinished) {
+                gameFinished()
+                viewModel.onGameFinishComplete()
+            }
+        })
 
         return binding.root
     }
