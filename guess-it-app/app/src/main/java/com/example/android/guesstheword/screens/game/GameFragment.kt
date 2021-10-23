@@ -46,10 +46,6 @@ class GameFragment : Fragment() {
         binding.lifecycleOwner = this
 
         /** Setting up LiveData observation relationship **/
-        viewModel.currentTime.observe(viewLifecycleOwner, Observer { newTime ->
-            binding.timerText.text = DateUtils.formatElapsedTime(newTime)
-        })
-
         viewModel.eventGameFinish.observe(viewLifecycleOwner, Observer { hasFinished ->
             if (hasFinished) {
                 gameFinished()
@@ -60,9 +56,7 @@ class GameFragment : Fragment() {
         return binding.root
     }
 
-    /**
-     * Called when the game is finished
-     */
+    /** Called when the game is finished **/
     private fun gameFinished() {
         val action = GameFragmentDirections.actionGameToScore(viewModel.score.value ?: 0)
         findNavController(this).navigate(action)
